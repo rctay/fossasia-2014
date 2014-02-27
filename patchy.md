@@ -10,7 +10,7 @@ Premise of talk: track your patches how you would track your source code.
 // They may live a "double-life" that never sees the light of day - people only see the polished, accepted patch, 
 -->
 
-#
+# <!-- about myself, intro, pic of superhero -->
 
 ## Context
 
