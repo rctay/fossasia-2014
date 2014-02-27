@@ -14,8 +14,8 @@ Premise of talk: track your patches how you would track your source code.
 
 ## Context
 
-> - open-source
-> - distributed version control
+- open-source
+- distributed version control
 
 ## Patch Lifecycle
 
@@ -53,7 +53,7 @@ $ git log -5
 ```
 
 <div class="notes">
-Let's say we have 2 patches, a preparatory patch, and a 
+Let's say we have 2 patches, a preparatory patch, and the actual patch. 
 </div>
 
 ##
