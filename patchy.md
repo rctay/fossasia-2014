@@ -42,11 +42,6 @@ What some of us may do - I certainly did - is just to change the commits directl
 
 ## git-rebase
 
-<div class="notes">
-- each iteration, rebase --interactive then e
-- history: reflog
-</div>
-
 ##
 
 ```bash
