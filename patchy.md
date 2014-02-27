@@ -10,11 +10,12 @@ Premise of talk: track your patches how you would track your source code.
 // They may live a "double-life" that never sees the light of day - people only see the polished, accepted patch, 
 -->
 
-# About <!-- about myself -->
+#
 
-## one
+## Context
 
-## two
+> - open-source
+> - distributed version control
 
 ## Patch Lifecycle
 
