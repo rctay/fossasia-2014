@@ -16,10 +16,15 @@ Premise of talk: track your patches how you would track your source code.
 
 <!-- about myself, intro, pic of superhero -->
 
-## Context
+## Context <!-- assumptions -->
 
-- open-source
-- distributed version control
+- source code tracked by Git  
+  _though can apply to distributed version control_
+
+- code contribution model: email-based patch model  
+  _though can apply to Github pull requests as well_<!--
+examples: Linux kernel, Git, LLVM
+-->
 
 ## Patch Lifecycle
 
