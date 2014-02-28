@@ -2,6 +2,10 @@
 % Tay Ray Chuan
 % 2014 Mar 1
 
+---
+
+![Source: http://www.dccomics.com/characters/justice-league](images/GalleryChar_1900x900_JusticeLeague_52ab8e54d0a6f0.42170553.jpg)
+
 <!--
 Superheroes are awesome. They have secret lives.
 Your patches are awesome, they should have secret lives too.
@@ -10,7 +14,7 @@ Premise of talk: track your patches how you would track your source code.
 // They may live a "double-life" that never sees the light of day - people only see the polished, accepted patch, 
 -->
 
-# <!-- about myself, intro, pic of superhero -->
+<!-- about myself, intro, pic of superhero -->
 
 ## Context
 
