@@ -4,15 +4,18 @@
 
 ---
 
-![Source: http://www.dccomics.com/characters/justice-league](images/GalleryChar_1900x900_JusticeLeague_52ab8e54d0a6f0.42170553.jpg)
+![](images/GalleryChar_1900x900_JusticeLeague_52ab8e54d0a6f0.42170553.jpg)
 
-<!--
+<p style="font-size: small">Source: http://www.dccomics.com/characters/justice-league</p>
+
+<!-- <div class="notes"> thing doesn't get converted to <aside> -->
+<aside class="notes">
 Superheroes are awesome. They have secret lives.
 Your patches are awesome, they should have secret lives too.
 Premise of talk: track your patches how you would track your source code.
 // While people only see the final, polished patch, they may not see the 
 // They may live a "double-life" that never sees the light of day - people only see the polished, accepted patch, 
--->
+</aside>
 
 <!-- about myself, intro, pic of superhero -->
 
