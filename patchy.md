@@ -40,14 +40,29 @@ examples: Linux kernel, Git, LLVM
 So, you spotted a bug in an open source project, or you want to add a feature. 
 </div>
 
-## zzz
+---
 
-<div class="notes">
-But we all know it's rarely that straightforward.
+![](images/Bed_of_Roses.jpg_350x350.jpg)
+
+<p style="font-size: small">Source: http://www.alibaba.com/product-detail/Bed-of-Roses_800016222.html</p>
+
+<aside class="notes">
+But we all know it's rarely that straightforward. (next)
+</aside>
+
+---
+
+![](images/397px-Rose_Prickles.jpg)
+
+<p style="font-size: small">Source: http://en.wikipedia.org/wiki/File:Rose_Prickles.jpg</p>
+
+<!-- bed of roses - straightforward - get it? -->
+
+<aside class="notes">
 Other contributors to the project who reviewed your patch may have some comments, so you would have to make some to your patch.
 
 After making the changes and re-submitting, sometimes your patch gets accepted, sometimes you need to make more changes. And so on - the patch may go through many more reviews and revisions.
-</div>
+</aside>
 
 # Common approaches <!--
 What some of us may do - I certainly did - is just to change the commits directly. One way to this is to use git-rebase.
