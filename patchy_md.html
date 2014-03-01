@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Tay Ray Chuan rctay89@gmail.com">
+  <title>Secret Lives of Patches</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+<body>
+<header>
+<h1 class="title">Secret Lives of Patches</h1>
+<h2 class="author">Tay Ray Chuan rctay89@gmail.com</h2>
+<h3 class="date">2014 Mar 1</h3>
+</header>
+<hr />
+<figure>
+<img src="images/GalleryChar_1900x900_JusticeLeague_52ab8e54d0a6f0.42170553.jpg" />
+</figure>
+<p style="font-size: small">
+Source: http://www.dccomics.com/characters/justice-league
+</p>
+
+<!-- <div class="notes"> thing doesn't get converted to <aside> -->
+<aside class="notes">
+Superheroes are awesome. They have secret lives. Your patches are awesome, they should have secret lives too. Premise of talk: track your patches how you would track your source code. // While people only see the final, polished patch, they may not see the // They may live a &quot;double-life&quot; that never sees the light of day - people only see the polished, accepted patch,
+</aside>
+
+<!-- about myself, intro, pic of superhero -->
+
+<h2 id="context">Context <!-- assumptions --></h2>
+<ul>
+<li><p>source code tracked by Git<br /> <em>though can apply to distributed version control</em></p></li>
+<li><p>code contribution model: email-based patch model<br /> <em>though can apply to Github pull requests as well</em><!--
+examples: Linux kernel, Git, LLVM
+--></p></li>
+</ul>
+<h2 id="patch-lifecycle">Patch Lifecycle</h2>
+<blockquote>
+<ul>
+<li>encounter bug/itch in open source project</li>
+<li>hack away → patch</li>
+<li>submit patch!</li>
+<li>...profit?</li>
+</ul>
+</blockquote>
+<div class="notes">
+So, you spotted a bug in an open source project, or you want to add a feature.
+</div>
+<hr />
+<figure>
+<img src="images/Bed_of_Roses.jpg_350x350.jpg" />
+</figure>
+<p style="font-size: small">
+Source: http://www.alibaba.com/product-detail/Bed-of-Roses_800016222.html
+</p>
+
+<aside class="notes">
+But we all know it's rarely that straightforward. (next)
+</aside>
+
+<hr />
+<figure>
+<img src="images/397px-Rose_Prickles.jpg" />
+</figure>
+<p style="font-size: small">
+Source: http://en.wikipedia.org/wiki/File:Rose_Prickles.jpg
+</p>
+
+<!-- bed of roses - straightforward - get it? -->
+
+<aside class="notes">
+<p>Other contributors to the project who reviewed your patch may have some comments, so you would have to make some to your patch.</p>
+After making the changes and re-submitting, sometimes your patch gets accepted, sometimes you need to make more changes. And so on - the patch may go through many more reviews and revisions.
+</aside>
+
+<h1 id="common-approaches">Common approaches <!--
+What some of us may do - I certainly did - is just to change the commits directly. One way to this is to use git-rebase --interactive.
+(How many know what used git-rebase before)
+--></h1>
+<h2 id="git-rebase">git-rebase</h2>
+<h2 id="section"></h2>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> log -5
+<span class="kw">060056c</span> fix bug (Tay Ray Chuan, Sat Feb 22 02:17:06 2014 +0800)
+<span class="kw">7e095ee</span> clean up in prep for bugfix (Tay Ray Chuan, Sat Feb 22 01:09:2014 +0800)
+<span class="kw">...</span></code></pre>
+<div class="notes">
+Let's say we have 2 patches, a preparatory patch, and the actual patch.
+</div>
+<h2 id="section-1"></h2>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> rebase -i master
+<span class="co"># (in editor)</span>
+<span class="kw">pick</span> 7e095ee clean up in prep for bugfix
+<span class="kw">e</span> 060056c fix bug <span class="co"># s/pick/e/</span></code></pre>
+<div class="notes">
+What we do is to start git-rebase --interactive, then use the &quot;edit&quot; command, so that git-rebase stops at that commit for us to change it, eg. via git commit --amend
+</div>
+<!--
+## manual squash
+
+    $ git diff HEAD > mypatch.diff
+    $ add patch text...
+-->
+
+<h2 id="section-2"></h2>
+<blockquote>
+<ul>
+<li>unable to annotate/describe changes</li>
+<li>no history <!--
+Those of you who may be familiar with git may say, "but we have the reflog." But I feel the reflog doesn't count.
+--></li>
+<li><em>(no, reflog doesn't count)</em></li>
+</ul>
+</blockquote>
+<h2 id="sounds-familiar">Sounds familiar?</h2>
+<div class="notes">
+These are exactly the reasons why you would want to use version control for your code! So, you should put your patches under version control.
+</div>
+<h2 id="a-plan">A plan</h2>
+<div class="notes">
+<p>We now have a rough idea on how to proceed. Since version control operates on files, our patches needs to be in the form of files. And it turns out that there are such patch tools. TODO verify that quilt use predates git (first commit: 2005)</p>
+The first is guilt.
+</div>
+<h1 id="guilt">guilt</h1>
+<h2 id="quilt-for-git">quilt for git</h2>
+<div class="notes">
+How many of you know what quilt is?
+</div>
+<h3 id="quilt-grand-daddy">quilt: grand daddy</h3>
+<div class="notes">
+<p>quilt is the grand daddy of patch tools allows you to &quot;push&quot; or apply patches on your working tree, pop patches, reorder, etc. quilt in turn is based on Andrew Morton's scripts, which he used to manage Linux kernel patches. [1]</p>
+<p>[1] http://lwn.net/Articles/13518/</p>
+back to guilt. guilt supports the same operations as quilt, just that it has tight integration with git.
+</div>
+<h2 id="quilt-semantics-in-git">quilt semantics in git</h2>
+<blockquote>
+<ul>
+<li><code>QUILT_PATCHES</code> dir: <code>.git/patches/&lt;branch&gt;</code> <!-- quilt directory is under the .git
+series file, patch files are there
+//small difference: patch and series stored at the same level
+//(quilt is under .pc ?)
+--></li>
+<li><code>guilt new mypatch.diff</code>: create a new patch</li>
+<li><code>guilt refresh</code>: regenerate patch from working tree changes</li>
+<li><code>guilt push</code>: apply patch as a commit</li>
+</ul>
+</blockquote>
+<h2 id="version-control">version control</h2>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">guilt_dir()</span> <span class="kw">{</span> <span class="ot">p=$(</span><span class="kw">git</span> symbolic-ref --short HEAD<span class="ot">)</span>; <span class="kw">echo</span> .git/patches/<span class="ot">${p#</span>guilt/<span class="ot">}</span><span class="kw">;</span> <span class="kw">}</span>
+$ <span class="kw">alias</span> ggit=<span class="st">&#39;git -C `guilt_dir`&#39;</span>
+$ <span class="kw">guilt</span> refresh
+$ <span class="kw">ggit</span> status
+$ <span class="kw">ggit</span> commit -m <span class="st">&#39;check error code at delete() instead of init()&#39;</span> mypatch.diff</code></pre>
+<div class="notes">
+<p>Now we have a quilt representation of patches, which are plain files, we can track changes to them.</p>
+we add an alias, ggit, to run git on the patch dir ${} is a bash-ism - sorry posix
+</div>
+<hr />
+<pre class="sourceCode diff"><code class="sourceCode diff">commit e9f6a3810217c5b76cc0d5630f2d0cb352db19f0
+Author: Tay Ray Chuan &lt;rctay89@gmail.com&gt;
+Date:   Wed Feb 26 03:03:49 2014 +0800
+
+    PR_PORT: drop port arg
+
+    It is dport exactly.
+
+<span class="kw">diff --git a/mypatch.diff b/mypatch.diff</span>
+index 67c64f7..7b90665 100644
+<span class="dt">--- a/mypatch.diff</span>
+<span class="dt">+++ b/mypatch.diff</span>
+<span class="dt">@@ -89,7 +89,7 @@ index 26fb5c5..031644a 100644</span>
+
+  /**
+ diff --git a/main.cpp b/main.cpp
+<span class="st">-index 34b0789..8051dbe 100644</span>
+<span class="ot">+index 34b0789..9885472 100644</span>
+ --- a/main.cpp
+ +++ b/main.cpp
+ @@ -17,6 +17,8 @@
+<span class="dt">@@ -156,13 +156,13 @@ index 34b0789..8051dbe 100644</span>
+  }
+
+ +#ifdef MULTIIN_DEBUG
+<span class="st">-+#define PR_PORT(prefix,port_inst,port,suffix) \</span>
+<span class="ot">++#define PR_PORT(prefix,port_inst,suffix) \</span>
+ +      (fprintf(stderr, &quot;%s%d (%d) %d-&gt;%d%s&quot;, \
+ +              (prefix), \
+ +              (port_inst)-&gt;linked_node-&gt;node-&gt;id, \
+ +              (port_inst)-&gt;linked_node-&gt;node-&gt;type, \
+ +              (port_inst)-&gt;sport, \
+<span class="st">-+              (port), \</span>
+<span class="ot">++              (port_inst)-&gt;dport, \</span>
+ +              (suffix)))
+ +#endif
+ +</code></pre>
+<aside class="notes">
+example of a log message
+</aside>
+
+<h2 id="review">Review</h2>
+<ul>
+<li>does what we want</li>
+<li>tad complicated</li>
+</ul>
+<div class="notes">
+with guilt, we can track our patches, because guilt works on plain files diff on diff, inception style - a bit complicated
+</div>
+<h1 id="stgit">stgit</h1>
+<h2 id="stacked-git">Stacked Git</h2>
+<h2 id="ff"><code>--ff</code></h2>
+<blockquote>
+<ul>
+<li>based on quilt too</li>
+<li>very rich porcelain</li>
+</ul>
+</blockquote>
+<div class="notes">
+we're skipping ahead on stgit
+</div>
+<h1 id="topgit">TopGit</h1>
+<h2 id="quilt---not">quilt - not</h2>
+<blockquote>
+<ul>
+<li>no diffs on diffs<br /> <em>(just hack on working tree and commit)</em></li>
+<li><code>tg patch</code></li>
+<li>magic files eg. <code>.topmsg</code> for patch message<br /> <em>(patch text is available for tracking)</em></li>
+</ul>
+</blockquote>
+<div class="notes">
+topgit is different from the rest totally breaks away from the quilt architecture - patch files, series file Instead of thinking of patch sets/series within as part of topic branch, treat each individual patch as worthy of a topic branch tg patch: generate patch
+</div>
+<hr />
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">tg</span> create t/cleanup
+<span class="kw">tg</span>: Automatically marking dependency on master
+<span class="kw">tg</span>: Creating t/cleanup base from master...
+$ <span class="co"># hack on patch</span>
+$ <span class="kw">git</span> commit</code></pre>
+<div class="notes">
+so no inception, diff on diff
+</div>
+<hr />
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">tg</span> create t/bugfix
+<span class="kw">tg</span>: Automatically marking dependency on t/cleanup
+<span class="kw">tg</span>: Creating t/bugfix base from t/cleanup...
+$ <span class="co"># hack on patch</span>
+$ <span class="kw">git</span> commit</code></pre>
+<div class="notes">
+patch ordering not via <code>series</code> file in quilt tracked in a special file <code>.topdeps</code>
+</div>
+<h2 id="review-1">Review</h2>
+<figure>
+<img src="images/280px-Facebook_like_thumb.png" alt="I like!" /><figcaption>I like!</figcaption>
+</figure>
+<hr />
+<ul>
+<li>works on <code>commit</code> in project; no inception-like diff-on-diff</li>
+<li>some magic unlike plain files in guilt, but ok</li>
+</ul>
+<h1 id="summary">Summary</h1>
+<h2 id="track-patches">track patches</h2>
+<p>...like how you track code</p>
+<blockquote>
+<ul>
+<li>annotation</li>
+<li>collaboration<br /> <em>(others can pick up where you left off)</em></li>
+</ul>
+</blockquote>
+<h2 id="rule-of-thumb">Rule of Thumb</h2>
+<p>start tracking after one patch revision</p>
+<div class="notes">
+if your patch doesn't get in after the review, because you need to make more changes, after
+</div>
+<h2 id="future-work">Future work</h2>
+<p>workflow for contributors; what about maintainers?</p>
+</body>
+</html>
