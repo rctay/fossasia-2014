@@ -65,7 +65,8 @@ After making the changes and re-submitting, sometimes your patch gets accepted, 
 </aside>
 
 # Common approaches <!--
-What some of us may do - I certainly did - is just to change the commits directly. One way to this is to use git-rebase.
+What some of us may do - I certainly did - is just to change the commits directly. One way to this is to use git-rebase --interactive.
+(How many know what used git-rebase before)
 -->
 
 ## git-rebase
