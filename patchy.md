@@ -92,6 +92,10 @@ pick 7e095ee clean up in prep for bugfix
 e 060056c fix bug # s/pick/e/
 ```
 
+<div class="notes">
+What we do is to start git-rebase --interactive, then use the "edit" command, so that git-rebase stops at that commit for us to change it, eg. via git commit --amend
+</div>
+
 <!--
 ## manual squash
 
