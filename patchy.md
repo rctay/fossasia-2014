@@ -109,7 +109,7 @@ What we do is to start git-rebase --interactive, then use the "edit" command, so
 > * unable to annotate/describe changes
 > * no history
 <!--
-Those of you who may be familiar with git may say, "but we have the reflog." But I feel the reflog counts.
+Those of you who may be familiar with git may say, "but we have the reflog." But I feel the reflog doesn't count.
 -->
 > * _(no, reflog doesn't count)_
 
