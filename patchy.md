@@ -1,5 +1,5 @@
 % Secret Lives of Patches
-% Tay Ray Chuan
+% Tay Ray Chuan rctay89@gmail.com
 % 2014 Mar 1
 
 ---
