@@ -116,7 +116,8 @@ Those of you who may be familiar with git may say, "but we have the reflog." But
 ## Sounds familiar?
 
 <div class="notes">
-reasons for putting your patches under version control, are the same reasons for using version control for your code!
+These are exactly the reasons why you would want to use version control for your code!
+So, you should put your patches under version control.
 </div>
 
 ## A plan
