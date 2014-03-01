@@ -119,46 +119,208 @@ Those of you who may be familiar with git may say, "but we have the reflog." But
 reasons for putting your patches under version control, are the same reasons for using version control for your code!
 </div>
 
-# Patch management
-
-# Tools
-
-## guilt
-
-git + quilt
+## A plan
 
 <div class="notes">
-No survey of patch management software can begin without mentioning quilt. Quilt allows you to 
+We now have a rough idea on how to proceed.
+Since version control operates on files, our patches needs to be in the form of files.
+And it turns out that there are such patch tools.
+TODO verify that quilt use predates git (first commit: 2005)
 
-Quilt in turn is based on Andrew Morton's scripts, which he used to manage Linux kernel patches. []
-
-- &lt;2002
-
-[] http://lwn.net/Articles/13518/
+The first is guilt.
 </div>
 
-##
+# guilt
 
-    $ find
-    ./patches/bugfix.diff
-    ./patches/cleanup.diff
-    ./series
-
-    $ cat series
-    cleanup.diff
-    bugfix.diff
+## quilt for git
 
 <div class="notes">
-This is what a typical quilt layout looks like. We have a `patches` directory to collect the patches, and a `series` file to specify the order in which they should be applied.
+How many of you know what quilt is?
 </div>
 
+### quilt: grand daddy
+<div class="notes">
+quilt is the grand daddy of patch tools
+allows you to "push" or apply patches on your working tree, pop patches, reorder, etc.
+quilt in turn is based on Andrew Morton's scripts, which he used to manage Linux kernel patches. [1]
 
-# stgit (Stacked Git)
+[1] http://lwn.net/Articles/13518/
+
+back to guilt.
+guilt supports the same operations as quilt, just that it has tight integration with git.
+</div>
+
+## quilt semantics in git
+
+> - `QUILT_PATCHES` dir: `.git/patches/<branch>`
+<!-- quilt directory is under the .git
+series file, patch files are there
+//small difference: patch and series stored at the same level
+//(quilt is under .pc ?)
+-->
+> - `guilt new mypatch.diff`: create a new patch
+> - `guilt refresh`: regenerate patch from working tree changes
+> - `guilt push`: apply patch as a commit
+
+## version control
+
+```bash
+$ guilt_dir() { p=$(git symbolic-ref --short HEAD); echo .git/patches/${p#guilt/}; }
+$ alias ggit='git -C `guilt_dir`'
+$ guilt refresh
+$ ggit status
+$ ggit commit -m 'check error code at delete() instead of init()' mypatch.diff
+```
+
+<div class="notes">
+Now we have a quilt representation of patches, which are plain files, we can track changes to them.
+
+we add an alias, ggit, to run git on the patch dir
+${} is a bash-ism - sorry posix
+</div>
+
+---
+
+```diff
+commit e9f6a3810217c5b76cc0d5630f2d0cb352db19f0
+Author: Tay Ray Chuan <rctay89@gmail.com>
+Date:   Wed Feb 26 03:03:49 2014 +0800
+
+    PR_PORT: drop port arg
+
+    It is dport exactly.
+
+diff --git a/mypatch.diff b/mypatch.diff
+index 67c64f7..7b90665 100644
+--- a/mypatch.diff
++++ b/mypatch.diff
+@@ -89,7 +89,7 @@ index 26fb5c5..031644a 100644
+
+  /**
+ diff --git a/main.cpp b/main.cpp
+-index 34b0789..8051dbe 100644
++index 34b0789..9885472 100644
+ --- a/main.cpp
+ +++ b/main.cpp
+ @@ -17,6 +17,8 @@
+@@ -156,13 +156,13 @@ index 34b0789..8051dbe 100644
+  }
+
+ +#ifdef MULTIIN_DEBUG
+-+#define PR_PORT(prefix,port_inst,port,suffix) \
+++#define PR_PORT(prefix,port_inst,suffix) \
+ +      (fprintf(stderr, "%s%d (%d) %d->%d%s", \
+ +              (prefix), \
+ +              (port_inst)->linked_node->node->id, \
+ +              (port_inst)->linked_node->node->type, \
+ +              (port_inst)->sport, \
+-+              (port), \
+++              (port_inst)->dport, \
+ +              (suffix)))
+ +#endif
+ +
+```
+
+<aside class="notes">
+example of a log message
+</aside>
+
+## Review
+
+- does what we want
+- tad complicated
+
+<div class="notes">
+with guilt, we can track our patches, because guilt works on plain files
+diff on diff, inception style - a bit complicated
+</div>
+
+# stgit
+
+## Stacked Git
+
+## `--ff`
+
+> - based on quilt too
+> - very rich porcelain
+
+<div class="notes">
+we're skipping ahead on stgit
+</div>
 
 # TopGit
 
-## Throws out Quilt entirely
+## quilt - not
+
+> - no diffs on diffs  
+  _(just hack on working tree and commit)_
+> - `tg patch`
+> - magic files eg. `.topmsg` for patch message  
+  _(patch text is available for tracking)_
 
 <div class="notes">
+topgit is different from the rest
+totally breaks away from the quilt architecture - patch files, series file
 Instead of thinking of patch sets/series within as part of topic branch, treat each individual patch as worthy of a topic branch
+tg patch: generate patch
 </div>
+
+---
+
+```bash
+$ tg create t/cleanup
+tg: Automatically marking dependency on master
+tg: Creating t/cleanup base from master...
+$ # hack on patch
+$ git commit
+```
+
+<div class="notes">
+so no inception, diff on diff
+</div>
+
+---
+
+```bash
+$ tg create t/bugfix
+tg: Automatically marking dependency on t/cleanup
+tg: Creating t/bugfix base from t/cleanup...
+$ # hack on patch
+$ git commit
+```
+
+<div class="notes">
+patch ordering not via `series` file in quilt
+tracked in a special file `.topdeps`
+</div>
+
+## Review
+
+![I like!](images/280px-Facebook_like_thumb.png)
+
+---
+
+- works on `commit` in project; no inception-like diff-on-diff
+- some magic unlike plain files in guilt, but ok
+
+# Summary
+
+## track patches
+
+...like how you track code
+
+> - annotation
+> - collaboration  
+  _(others can pick up where you left off)_
+
+## Rule of Thumb
+
+start tracking after one patch revision
+
+<div class="notes">
+if your patch doesn't get in after the review, because you need to make more changes, after 
+</div>
+
+## Future work
+
+workflow for contributors; what about maintainers?
